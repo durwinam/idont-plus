@@ -5,7 +5,7 @@
 #
 set -euo pipefail
 
-readonly SCRIPT_VERSION="1.0.3"
+readonly SCRIPT_VERSION="1.0.4"
 readonly TARGET_DIR="/var/lib/pasarguard/templates/subscription"
 readonly TARGET_FILE="${TARGET_DIR}/index.html"
 readonly ENV_FILE="/opt/pasarguard/.env"
@@ -442,7 +442,7 @@ prompt_pro_branding() {
 
 install_plus() {
   info "Installing ${C_BOLD}idont-plus${C_RESET}..."
-  download_template "$URL_STANDARD" "$TARGET_FILE"
+  download_template "$URL_plus" "$TARGET_FILE"
 }
  
 
