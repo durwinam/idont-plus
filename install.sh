@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
 #
-# idont Installer for Pasarguard
-# https://github.com/durwinam/idont
+# idont-plus Installer for Pasarguard
+# https://github.com/durwinam/idont-plus
 #
 set -euo pipefail
 
-readonly SCRIPT_VERSION="1.0.3"
+readonly SCRIPT_VERSION="1.0.0"
 readonly TARGET_DIR="/var/lib/pasarguard/templates/subscription"
 readonly TARGET_FILE="${TARGET_DIR}/index.html"
 readonly ENV_FILE="/opt/pasarguard/.env"
-readonly INSTALLER_RAW="https://raw.githubusercontent.com/durwinam/idont/main/install.sh"
 
+readonly INSTALLER_RAW="https://raw.githubusercontent.com/durwinam/idont-plus/main/install.sh"
 
-readonly URL_PRO="https://raw.githubusercontent.com/durwinam/idont/main/index.html"
+readonly URL_plus="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
+readonly URL_PRO="https://raw.githubusercontent.com/durwinam/idont-pro/main/index.html"
 
 # When run via "curl | bash", stdin is the pipe — re-download and re-run from a real file.
 if [[ ! -t 0 ]] && [[ -z "${idont_INSTALL_REEXEC:-}" ]]; then
-  tmpfile="$(mktemp /tmp/idont-install-XXXXXX.sh)"
+  tmpfile="$(mktemp /tmp/idont-plus-install-XXXXXX.sh)"
   cleanup() { rm -f "$tmpfile"; }
   trap cleanup EXIT
   if command -v curl >/dev/null 2>&1; then
@@ -25,7 +26,7 @@ if [[ ! -t 0 ]] && [[ -z "${idont_INSTALL_REEXEC:-}" ]]; then
     wget -qO "$tmpfile" "$INSTALLER_RAW"
   fi
   chmod 700 "$tmpfile"
-  export PGCLOCK_INSTALL_REEXEC=1
+  export idont-plus_INSTALL_REEXEC=1
   exec bash "$tmpfile" "$@"
 fi
 
@@ -38,9 +39,10 @@ if [[ -t 1 ]]; then
   readonly C_YELLOW='\033[33m'
   readonly C_BLUE='\033[34m'
   readonly C_CYAN='\033[36m'
+  readonly C_MAGENTA='\033[35m'
   readonly C_WHITE='\033[97m'
 else
-  readonly C_RESET='' C_BOLD='' C_DIM='' C_RED='' C_GREEN='' C_YELLOW='' C_BLUE='' C_CYAN='' C_WHITE=''
+  readonly C_RESET='' C_BOLD='' C_DIM='' C_RED='' C_GREEN='' C_YELLOW='' C_BLUE='' C_CYAN='' C_MAGENTA='' C_WHITE=''
 fi
 
 log_line() { printf '%b\n' "$1"; }
@@ -131,7 +133,7 @@ download_template() {
 apply_brand_pro() {
   local file="$1"
 
-  info "Applying idont brand settings..."
+  info "Applying idont-plus brand settings..."
   export BRAND_NAME="${BRAND_NAME:-}"
   export BRAND_SUBTITLE="${BRAND_SUBTITLE:-}"
   export BRAND_LOGO="${BRAND_LOGO:-}"
@@ -155,7 +157,7 @@ if original_len < 1000 or "</html>" not in html.lower():
     sys.stderr.write("Downloaded file does not look like a complete HTML template.\n")
     sys.exit(1)
 
-BRAND_OBJECT_KEYS = ("DEFAULT_BRAND", "durwinam_DEFAULT_BRAND", "PANEL_DEFAULT_BRAND")
+BRAND_OBJECT_KEYS = ("DEFAULT_BRAND", "MRCLOCK_DEFAULT_BRAND", "PANEL_DEFAULT_BRAND")
 LOGO_KEYS = ("logoUrl", "logo", "logoURL", "logo_url")
 
 def js_quote(value: str) -> str:
@@ -400,7 +402,8 @@ restart_pasarguard() {
 print_menu() {
   log_line "${C_BOLD}Select a template:${C_RESET}"
   log_blank
-  log_line "  ${C_YELLOW}1${C_RESET}) ${C_BOLD}idont${C_RESET}     ${C_DIM}Custom brand name, tagline, and logo${C_RESET}"
+  log_line "  ${C_CYAN}1${C_RESET}) ${C_BOLD}idont-plus${C_RESET}        ${C_DIM}Standard edition (recommended)${C_RESET}"
+  log_line "  ${C_YELLOW}2${C_RESET}) ${C_BOLD}idont-pro${C_RESET}     ${C_DIM}Custom brand name, tagline, and logo${C_RESET}"
   log_line "  ${C_RED}0${C_RESET}) ${C_BOLD}Exit${C_RESET}"
   log_blank
 }
@@ -408,12 +411,12 @@ print_menu() {
 prompt_pro_branding() {
   local brand_name brand_subtitle brand_logo
 
-  log_line "${C_YELLOW}${C_BOLD}--- idont Brand Setup ---${C_RESET}"
+  log_line "${C_YELLOW}${C_BOLD}--- idont-pro Brand Setup ---${C_RESET}"
   log_blank
   log_line "${C_DIM}Press Enter to skip any field and keep the default value${C_RESET}"
   log_blank
 
-  read_tty "$(printf '%b' "${C_BOLD}Brand name${C_RESET} (e.g. durwianm): ")" brand_name
+  read_tty "$(printf '%b' "${C_BOLD}Brand name${C_RESET} (e.g. durwinam): ")" brand_name
   brand_name="${brand_name:-}"
 
   read_tty "$(printf '%b' "${C_BOLD}Tagline / caption${C_RESET} (e.g. Subscription panel): ")" brand_subtitle
@@ -437,20 +440,16 @@ prompt_pro_branding() {
   export BRAND_LOGO="$brand_logo"
 }
 
-install_lite() {
-  info "Installing ${C_BOLD}idont Lite${C_RESET}..."
-  download_template "$URL_LITE" "$TARGET_FILE"
-}
-
 install_standard() {
-  info "Installing ${C_BOLD}idont pro${C_RESET}..."
+  info "Installing ${C_BOLD}idont-plus${C_RESET}..."
   download_template "$URL_STANDARD" "$TARGET_FILE"
 }
+ 
 
 install_pro() {
   local backup
 
-  info "Installing ${C_BOLD}idont${C_RESET}..."
+  info "Installing ${C_BOLD}idont-pro${C_RESET}..."
   prompt_pro_branding
 
   download_template "$URL_PRO" "$TARGET_FILE"
@@ -489,13 +488,19 @@ main() {
 
   while true; do
     print_menu
-    read_tty "$(printf '%b' "${C_BOLD}Enter your choice [0-3]: ${C_RESET}")" choice
+    read_tty "$(printf '%b' "${C_BOLD}Enter your choice [0-4]: ${C_RESET}")" choice
     choice="${choice:-}"
 
     case "$choice" in
-      1)
+      
+    1)
+        install_standard
+        edition="idont-plus"
+        break
+        ;;
+      2)
         install_pro
-        edition="idont"
+        edition="idont-pro"
         break
         ;;
       0)
@@ -503,7 +508,7 @@ main() {
         exit 0
         ;;
       *)
-        warn "Invalid choice. Please enter a number from 0 to 1."
+        warn "Invalid choice. Please enter a number from 0 to 2."
         log_blank
         ;;
     esac
