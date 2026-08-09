@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # idont-plus Installer for Pasarguard
-# https://github.com/durwinam/idont-plus
+# https://github.com/durwinam/idont-plus 
 #
 set -euo pipefail
 
@@ -9,14 +9,14 @@ readonly SCRIPT_VERSION="1.0.4"
 readonly TARGET_DIR="/var/lib/pasarguard/templates/subscription"
 readonly TARGET_FILE="${TARGET_DIR}/index.html"
 readonly ENV_FILE="/opt/pasarguard/.env"
-
 readonly INSTALLER_RAW="https://raw.githubusercontent.com/durwinam/idont-plus/main/install.sh"
 
-readonly URL_plus="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
+readonly URL_LITE="https://raw.githubusercontent.com/durwinam/idont-Lite/main/index.html"
+readonly URL_PLUS="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
 readonly URL_PRO="https://raw.githubusercontent.com/durwinam/idont-pro/main/index.html"
 
 # When run via "curl | bash", stdin is the pipe — re-download and re-run from a real file.
-if [[ ! -t 0 ]] && [[ -z "${idont_INSTALL_REEXEC:-}" ]]; then
+if [[ ! -t 0 ]] && [[ -z "${idont-plus_INSTALL_REEXEC:-}" ]]; then
   tmpfile="$(mktemp /tmp/idont-plus-install-XXXXXX.sh)"
   cleanup() { rm -f "$tmpfile"; }
   trap cleanup EXIT
@@ -39,10 +39,9 @@ if [[ -t 1 ]]; then
   readonly C_YELLOW='\033[33m'
   readonly C_BLUE='\033[34m'
   readonly C_CYAN='\033[36m'
-  readonly C_MAGENTA='\033[35m'
   readonly C_WHITE='\033[97m'
 else
-  readonly C_RESET='' C_BOLD='' C_DIM='' C_RED='' C_GREEN='' C_YELLOW='' C_BLUE='' C_CYAN='' C_MAGENTA='' C_WHITE=''
+  readonly C_RESET='' C_BOLD='' C_DIM='' C_RED='' C_GREEN='' C_YELLOW='' C_BLUE='' C_CYAN='' C_WHITE=''
 fi
 
 log_line() { printf '%b\n' "$1"; }
@@ -67,7 +66,7 @@ read_tty() {
 print_banner() {
   log_blank
   hr
-  log_line "${C_WHITE}${C_BOLD}  idont Installer for Pasarguard${C_RESET}"
+  log_line "${C_WHITE}${C_BOLD}  IDONT Installer for Pasarguard${C_RESET}"
   log_line "${C_DIM}  Version ${SCRIPT_VERSION}${C_RESET}"
   hr
   log_blank
@@ -402,8 +401,9 @@ restart_pasarguard() {
 print_menu() {
   log_line "${C_BOLD}Select a template:${C_RESET}"
   log_blank
-  log_line "  ${C_CYAN}1${C_RESET}) ${C_BOLD}idont-plus${C_RESET}        ${C_DIM}Standard edition (recommended)${C_RESET}"
-  log_line "  ${C_YELLOW}2${C_RESET}) ${C_BOLD}idont-pro${C_RESET}     ${C_DIM}Custom brand name, tagline, and logo${C_RESET}"
+  log_line "  ${C_GREEN}1${C_RESET}) ${C_BOLD}soon-lite${C_RESET}   ${C_DIM}soon${C_RESET}"
+  log_line "  ${C_CYAN}2${C_RESET}) ${C_BOLD}idont-plus${C_RESET}        ${C_DIM}Standard edition (recommended)${C_RESET}"
+  log_line "  ${C_YELLOW}3${C_RESET}) ${C_BOLD}idont-pro${C_RESET}     ${C_DIM}Lightweight and fast${C_RESET}"
   log_line "  ${C_RED}0${C_RESET}) ${C_BOLD}Exit${C_RESET}"
   log_blank
 }
@@ -411,7 +411,7 @@ print_menu() {
 prompt_pro_branding() {
   local brand_name brand_subtitle brand_logo
 
-  log_line "${C_YELLOW}${C_BOLD}--- idont-pro Brand Setup ---${C_RESET}"
+  log_line "${C_YELLOW}${C_BOLD}--- idont-plus Brand Setup ---${C_RESET}"
   log_blank
   log_line "${C_DIM}Press Enter to skip any field and keep the default value${C_RESET}"
   log_blank
@@ -440,11 +440,15 @@ prompt_pro_branding() {
   export BRAND_LOGO="$brand_logo"
 }
 
-install_plus() {
-  info "Installing ${C_BOLD}idont-plus${C_RESET}..."
-  download_template "$URL_plus" "$TARGET_FILE"
+install_lite() {
+  info "Installing ${C_BOLD}idont-lite${C_RESET}..."
+  download_template "$URL_LITE" "$TARGET_FILE"
 }
- 
+
+install_standard() {
+  info "Installing ${C_BOLD}idont-plus${C_RESET}..."
+  download_template "$URL_PLUS" "$TARGET_FILE"
+}
 
 install_pro() {
   local backup
@@ -488,17 +492,21 @@ main() {
 
   while true; do
     print_menu
-    read_tty "$(printf '%b' "${C_BOLD}Enter your choice [0-4]: ${C_RESET}")" choice
+    read_tty "$(printf '%b' "${C_BOLD}Enter your choice [0-3]: ${C_RESET}")" choice
     choice="${choice:-}"
 
     case "$choice" in
-      
-    1)
+      1)
+        install_lite
+        edition="idont-lite"
+        break
+        ;;
+      2)
         install_plus
         edition="idont-plus"
         break
         ;;
-      2)
+      3)
         install_pro
         edition="idont-pro"
         break
@@ -508,7 +516,7 @@ main() {
         exit 0
         ;;
       *)
-        warn "Invalid choice. Please enter a number from 0 to 2."
+        warn "Invalid choice. Please enter a number from 0 to 3."
         log_blank
         ;;
     esac
