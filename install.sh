@@ -445,7 +445,7 @@ install_lite() {
   download_template "$URL_LITE" "$TARGET_FILE"
 }
 
-install_standard() {
+install_plus() {
   info "Installing ${C_BOLD}idont-plus${C_RESET}..."
   download_template "$URL_PLUS" "$TARGET_FILE"
 }
