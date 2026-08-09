@@ -440,7 +440,7 @@ prompt_pro_branding() {
   export BRAND_LOGO="$brand_logo"
 }
 
-install_standard() {
+install_plus() {
   info "Installing ${C_BOLD}idont-plus${C_RESET}..."
   download_template "$URL_STANDARD" "$TARGET_FILE"
 }
