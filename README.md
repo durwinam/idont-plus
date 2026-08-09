@@ -32,17 +32,17 @@
 روی سرور **Ubuntu** با Pasarguard نصب‌شده:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/durwinam/idont/main/install.sh -o /tmp/idont-install.sh && sudo bash /tmp/idont-install.sh
+curl -fsSL https://raw.githubusercontent.com/durwinam/idont-plus/main/install.sh -o /tmp/idont-plus-install.sh && sudo bash /tmp/idont-plus-install.sh
 ```
 
 یا:
 
 ```bash
-wget -qO /tmp/idont-install.sh https://raw.githubusercontent.com/durwinam/idont/main/install.sh && sudo bash /tmp/idont-install.sh
+wget -qO /tmp/idont-install.sh https://raw.githubusercontent.com/durwinam/idont-plus/main/install.sh && sudo bash /tmp/idont-plus-install.sh
 ```
 
 
-در منو گزینه **3) PGClock Pro** را انتخاب کنید. سپس از شما پرسیده می‌شود:
+در منو گزینه **1) idont-plus** را انتخاب کنید. سپس از شما پرسیده می‌شود:
 
 - **نام برند** (FA و EN)
 - **زیرعنوان / توضیح کوتاه** (FA و EN)
