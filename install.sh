@@ -5,7 +5,7 @@
 #
 set -euo pipefail
 
-readonly SCRIPT_VERSION="1.0.0"
+readonly SCRIPT_VERSION="1.0.3"
 readonly TARGET_DIR="/var/lib/pasarguard/templates/subscription"
 readonly TARGET_FILE="${TARGET_DIR}/index.html"
 readonly ENV_FILE="/opt/pasarguard/.env"
