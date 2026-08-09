@@ -494,7 +494,7 @@ main() {
     case "$choice" in
       
     1)
-        install_standard
+        install_plus
         edition="idont-plus"
         break
         ;;
