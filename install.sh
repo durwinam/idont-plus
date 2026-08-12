@@ -401,8 +401,7 @@ restart_pasarguard() {
 print_menu() {
   log_line "${C_BOLD}Select a template:${C_RESET}"
   log_blank
-  log_line "  ${C_GREEN}1${C_RESET}) ${C_BOLD}soon-lite${C_RESET}   ${C_DIM}soon${C_RESET}"
-  log_line "  ${C_CYAN}2${C_RESET}) ${C_BOLD}idont-plus${C_RESET}        ${C_DIM}Standard edition (recommended)${C_RESET}"
+
   log_line "  ${C_YELLOW}3${C_RESET}) ${C_BOLD}idont-pro${C_RESET}     ${C_DIM}Lightweight and fast${C_RESET}"
   log_line "  ${C_RED}0${C_RESET}) ${C_BOLD}Exit${C_RESET}"
   log_blank
