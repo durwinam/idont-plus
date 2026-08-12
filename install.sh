@@ -11,8 +11,8 @@ readonly TARGET_FILE="${TARGET_DIR}/index.html"
 readonly ENV_FILE="/opt/pasarguard/.env"
 readonly INSTALLER_RAW="https://raw.githubusercontent.com/durwinam/idont-plus/main/install.sh"
 
-readonly URL_LITE="https://raw.githubusercontent.com/durwinam/idont-Lite/main/index.html"
-readonly URL_PLUS="https://raw.githubusercontent.com/durwinam/idont-pro/main/index.html"
+readonly URL_LITE="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
+readonly URL_PLUS="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
 readonly URL_PRO="https://raw.githubusercontent.com/durwinam/idont-plus/main/index.html"
 
 # When run via "curl | bash", stdin is the pipe — re-download and re-run from a real file.
