@@ -402,7 +402,7 @@ print_menu() {
   log_line "${C_BOLD}Select a template:${C_RESET}"
   log_blank
 
-  log_line "  ${C_YELLOW}3${C_RESET}) ${C_BOLD}idont-pro${C_RESET}     ${C_DIM}Lightweight and fast${C_RESET}"
+  log_line "  ${C_YELLOW}1${C_RESET}) ${C_BOLD}idont-plus${C_RESET}     ${C_DIM}Lightweight and fast${C_RESET}"
   log_line "  ${C_RED}0${C_RESET}) ${C_BOLD}Exit${C_RESET}"
   log_blank
 }
@@ -515,7 +515,7 @@ main() {
         exit 0
         ;;
       *)
-        warn "Invalid choice. Please enter a number from 0 to 3."
+        warn "Invalid choice. Please enter a number from 0 to 1."
         log_blank
         ;;
     esac
